@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation    Ejemplo sencillo de automatizacion de pruebas con robotframework y la libreria de selenium
-Library    SeleniumLibrary    
+Library    SeleniumLibrary
 #https://robotframework.org/SeleniumLibrary/SeleniumLibrary.html#Capture%20Page%20Screenshot
 Library    ExcelLibrary
 #https://rawgit.com/peterservice-rnd/robotframework-excellib/master/docs/ExcelLibrary.html
@@ -14,6 +14,8 @@ Default Tags    All Regression Tests
 *** Variables ***
 ${LOGIN URL}    https://areaprivada.orange.es/movilizado/index.html
 ${BROWSER}      chrome
+${Toggle_Capturas_Evidencias}    false
+#Toggle_Capturas_Evidencias: si se activa realiza capturas de evidencias de todos los tests.
 
 *** Test Cases ***    
 Login_CLU_OK
@@ -21,7 +23,7 @@ Login_CLU_OK
     ${Hoja_excel}=    Set Variable    LoginCLU_Test_Cases_OK
     @{datos}=    Leer_Datos_Excel   hoja=${Hoja_excel}
     ${fecha}=    Set fecha test
-    Set Screenshot Directory    test/results/LoginCLU/OK/${fecha}
+    Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    Set Screenshot Directory    test/results/LoginCLU/OK/${fecha}
     FOR    ${usuario}   ${password}  ${resultado_esperado}    IN    @{datos}
         Abrir miOrangeApp Movilizado
         log    Ejecutando Test...
@@ -29,7 +31,7 @@ Login_CLU_OK
         log    Password: ${password}
         log    Resultado esperado: ${resultado_esperado}
         Login    ${usuario}    ${password}    ${Hoja_excel}
-        Pantallazo_LoginCLU_OK
+        Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    Pantallazo_LoginCLU_OK
         Close Browser
     END
 Login_CLU_KO
@@ -37,7 +39,7 @@ Login_CLU_KO
     ${Hoja_excel}=    Set Variable    LoginCLU_Test_Cases_KO
     @{datos}=    Leer_Datos_Excel   hoja=${Hoja_excel}
     ${fecha}=    set fecha test
-    Set Screenshot Directory    test/results/LoginCLU/KO/${fecha}
+    Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    Set Screenshot Directory    test/results/LoginCLU/KO/${fecha}
     FOR    ${usuario}   ${password}  ${resultado_esperado}    IN    @{datos}
         Abrir miOrangeApp Movilizado
         log    Ejecutando Test...
@@ -45,7 +47,7 @@ Login_CLU_KO
         log    Password: ${password}
         log    Resultado esperado: ${resultado_esperado}
         Login    ${usuario}    ${password}    ${Hoja_excel}
-        Pantallazo_LoginCLU_KO
+        Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    Pantallazo_LoginCLU_KO
         Close Browser
     END
 Consulta_Bola_Facturas
@@ -53,7 +55,7 @@ Consulta_Bola_Facturas
     ${Hoja_excel}=    Set Variable    Consultas_Test_Cases_OK
     @{datos}=    Leer_Datos_Excel   hoja=${Hoja_excel}
     ${fecha}=    Set fecha test
-    Set Screenshot Directory    test/results/Facturas/${fecha}
+    Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    Set Screenshot Directory    test/results/Facturas/${fecha}
     FOR    ${usuario}   ${password}  ${resultado_esperado}    IN    @{datos}
         Abrir miOrangeApp Movilizado
         log    Ejecutando Test...
@@ -69,7 +71,7 @@ Consulta_CPs
     ${Hoja_excel}=    Set Variable    Consultas_Test_Cases_OK
     @{datos}=    Leer_Datos_Excel   hoja=${Hoja_excel}
     ${fecha}=    Set fecha test
-    Set Screenshot Directory    test/results/Milinea/CPs/${fecha}
+    Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    Set Screenshot Directory    test/results/Milinea/CPs/${fecha}
     FOR    ${usuario}   ${password}  ${resultado_esperado}    IN    @{datos}
         Abrir miOrangeApp Movilizado
         log    Ejecutando Test...
@@ -85,7 +87,7 @@ Consulta_Datos_Contrato
     ${Hoja_excel}=    Set Variable    Consultas_Test_Cases_OK
     @{datos}=    Leer_Datos_Excel   hoja=${Hoja_excel}
     ${fecha}=    Set fecha test
-    Set Screenshot Directory    test/results/Milinea/DatosContrato/${fecha}
+    Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    Set Screenshot Directory    test/results/Milinea/DatosContrato/${fecha}
     FOR    ${usuario}   ${password}  ${resultado_esperado}    IN    @{datos}
         Abrir miOrangeApp Movilizado
         log    Ejecutando Test...
@@ -121,22 +123,22 @@ Login
     ...    input text    id=tealeaf_user_password    ${password}
     Press Keys    id=tealeaf_user_password    ENTER
     sleep    1
-    #Click Element    id=tag_ut_button_msisdn
     Run Keyword If    '${Hoja_excel}'!='LoginCLU_Test_Cases_KO'    
     ...    Wait Until Page Contains Element    //div[@class="linkBalls"]
     Run Keyword If    '${Hoja_excel}'!='LoginCLU_Test_Cases_KO' 
     ...    Wait Until Element Is Enabled    //div[@class="linkBalls"]
     Run Keyword If    '${Hoja_excel}'!='LoginCLU_Test_Cases_KO' 
     ...    Wait Until Element Is Visible    //div[@class="linkBalls"] 
-    Run Keyword If    '${Hoja_excel}'!='LoginCLU_Test_Cases_KO'    sleep    5
+    Run Keyword If    '${Hoja_excel}'!='LoginCLU_Test_Cases_KO'    
+    ...    Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    sleep    5
 Pagina_Facturas
     Wait Until Element Is Enabled    id=accesoFacturas
     Wait Until Element Is Visible    id=accesoFacturas   
     Click Element                    id=accesoFacturas
-    sleep    1
+    Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    sleep    1
     Wait Until Page Contains Element    //module-link[@link-module="cmsPagina.modules[18]"]
     Wait Until Element Is Enabled    //module-link[@link-module="cmsPagina.modules[18]"] 
-    Pantallazo_Pagina_Facturas
+    Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    Pantallazo_Pagina_Facturas
 Pagina_Milinea>CPs   
     Wait Until Element Is Enabled    id=accesoLinea
     Wait Until Element Is Visible    id=accesoLinea
@@ -145,14 +147,14 @@ Pagina_Milinea>CPs
     Wait Until Page Contains Element    //module-link[@link-module="cmsPagina.modules[22]"]
     Wait Until Element Is Enabled    //module-link[@link-module="cmsPagina.modules[22]"] 
     Scroll Element Into View    //permanenceagreement[@permanence-agreement='cmsPagina.modules[24]'] 
-    Pantallazo_Pagina_Milinea
+    Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    Pantallazo_Pagina_Milinea
     ${cp}=    Get Text    //span[@class="text-grey_APP15 ng-binding"]
     Run Keyword If    '${cp}'!='Actualmente no tienes permanencia'    Pagina_CPs       
 Pagina_CPs
     Click Element    //div[@class="padding-x_APP15 padding-top_APP15"]
-    sleep    1
+    Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    sleep    1
     Wait Until Page Contains Element    //*[contains(text(),'Fecha inicio')]
-    Pantallazo_Pagina_CPs
+    Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    Pantallazo_Pagina_CPs
 Pagina_Milinea>DatosContrato
     Wait Until Element Is Enabled    id=accesoLinea
     Wait Until Element Is Visible    id=accesoLinea
@@ -164,12 +166,12 @@ Pagina_Milinea>DatosContrato
     Wait Until Element Is Enabled    //module-link[@link-module="cmsPagina.modules[27]"]
     Scroll Element Into View    //module-link[@link-module="cmsPagina.modules[29]"]
     Click Element    //module-link[@link-module="cmsPagina.modules[29]"]
-    sleep    1
+    Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    sleep    1
     Wait Until Page Contains Element    //userdata[@datos-contrato="cmsPagina.modules[3]"]
     Wait Until Element Is Enabled    //userdata[@datos-contrato="cmsPagina.modules[3]"]
-    Pantallazo_Pagina_Contrato
-    Scroll Element Into View    //userdata[@datos-contrato="cmsPagina.modules[3]"]
-    Pantallazo_Pagina_Contrato
+    Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    Pantallazo_Pagina_Contrato
+    Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    Scroll Element Into View    //userdata[@datos-contrato="cmsPagina.modules[3]"]
+    Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    Pantallazo_Pagina_Contrato
 Pantallazo_LoginCLU_OK
     Capture Page Screenshot    LoginCLU_OK-{index}.png
 Pantallazo_LoginCLU_KO
@@ -182,4 +184,3 @@ Pantallazo_Pagina_CPs
     Capture Page Screenshot    CPs_OK-{index}.png
 Pantallazo_Pagina_Contrato
     Capture Page Screenshot    Contrato_OK-{index}.png
-    
