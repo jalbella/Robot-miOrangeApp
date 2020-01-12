@@ -14,6 +14,7 @@ Default Tags    All Regression Tests
 *** Variables ***
 ${LOGIN URL}    https://areaprivada.orange.es/movilizado/index.html
 ${BROWSER}      chrome
+
 *** Test Cases ***    
 Login_CLU_OK
     [Tags]    Login
@@ -62,7 +63,7 @@ Consulta_Bola_Facturas
         Login    ${usuario}    ${password}    ${Hoja_excel}
         Pagina_Facturas
         Close Browser
-    END
+    END 
 Consulta_CPs
     [Tags]    Consultas
     ${Hoja_excel}=    Set Variable    Consultas_Test_Cases_OK
@@ -78,7 +79,7 @@ Consulta_CPs
         Login    ${usuario}    ${password}    ${Hoja_excel}
         Pagina_Milinea>CPs
         Close Browser
-    END      
+    END
 Consulta_Datos_Contrato
     [Tags]    Consultas
     ${Hoja_excel}=    Set Variable    Consultas_Test_Cases_OK
@@ -95,6 +96,7 @@ Consulta_Datos_Contrato
         Pagina_Milinea>DatosContrato
         Close Browser
     END
+ 
 *** Keywords ***
 Set fecha test
     ${fecha}=    Get Current Date    local
@@ -151,7 +153,6 @@ Pagina_CPs
     sleep    1
     Wait Until Page Contains Element    //*[contains(text(),'Fecha inicio')]
     Pantallazo_Pagina_CPs
-    
 Pagina_Milinea>DatosContrato
     Wait Until Element Is Enabled    id=accesoLinea
     Wait Until Element Is Visible    id=accesoLinea
