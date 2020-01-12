@@ -14,8 +14,8 @@ Default Tags    All Regression Tests
 *** Variables ***
 ${LOGIN URL}    https://areaprivada.orange.es/movilizado/index.html
 ${BROWSER}      chrome
-${Toggle_Capturas_Evidencias}    false
-#Toggle_Capturas_Evidencias: si se activa realiza capturas de evidencias de todos los tests.
+${Toggle_Capturas_Evidencias}    true
+#Si se activa el Toggle_Capturas_Evidencias, realiza capturas de evidencias de todos los tests.
 
 *** Test Cases ***    
 Login_CLU_OK
