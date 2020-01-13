@@ -216,7 +216,7 @@ Pagina_Contrato
     Wait Until Element Is Enabled    //module-link[@link-module="cmsPagina.modules[27]"]
     Scroll Element Into View    //module-link[@link-module="cmsPagina.modules[29]"]
     Click Element    //module-link[@link-module="cmsPagina.modules[29]"]
-    sleep    2
+    sleep    3
     Wait Until Page Contains Element    //userdata[@datos-contrato="cmsPagina.modules[3]"]
     Wait Until Element Is Enabled    //userdata[@datos-contrato="cmsPagina.modules[3]"]
     Run Keyword If    '${Toggle_Capturas_Evidencias}'=='true'    
